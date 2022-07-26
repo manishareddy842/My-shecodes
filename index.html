@@ -1,12 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Weather</title>
+    <style>
+        .center {
+            border: 1px solid #dadde1;
+            padding: 15px;
+            margin: 20px auto;
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+        }
+    </style>
 </head>
-<body>
-   <h1>hello v1</h1> 
+
+<body class="center">
+    <div class="Container">
+        <div>
+            <form id="enter">
+                <input type="text" placeholder="Enter a city name" autocomplete="on" id="name" autofocus="on"
+                    value="abcd" />
+                <span>
+                    <input type="submit" value="search" id="quinoa" /></span>
+            </form>
+            <div>
+                <p class="oneDa">Sydney NSW, Australia</p>
+            </div>
+            <div class="newDay">Monday</div>
+            <div id="ol">Partly Cloudy</div>
+            <div class="row">
+                <div class="col-8">
+                    <span>
+                        <img src="https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather02-1024.png"
+                            alt="weaterIcon" width="20px" height="20px">
+                        <span class="change">19</span>
+                        <span class="units"><a href="#" id="celsiusLink">C </a></span>
+                        <span>|</span>
+                        <span class="farenhite"><a href="#" id="farenhiteLink">F</a></span>
+                    </span>
+                </div>
+                <div class="col-4">
+                    <span>
+
+                        <div>Humidity: <span id="one">77%</span></div>
+                        <div>Wind: <span id="two">s8 km/h</span></div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        let latest = new Date();
+        let date = latest.getDate();
+        let time = latest.getTime();
+        let hour = latest.getHours();
+        let minutes = latest.getMinutes();
+        let day = days[latest.getDay()];
+        let then = document.querySelector(".newDay");
+        then.innerHTML = `${day} ${hour} ${minutes}`
+        function showTemperature(response) {
+            console.log(response);
+            document.querySelector(".oneDa").innerHTML = response.data.name;
+            document.querySelector(".change").innerHTML = response.data.main.temp;
+            document.querySelector("#one").innerHTML = response.data.main.humidity;
+            document.querySelector("#two").innerHTML = Math.round(response.data.wind.speed);
+            document.querySelector("#ol").innerHTML = response.data.weather[0].main;
+
+
+        }
+
+        function tooth(event) {
+            event.preventDefault();
+            let apiKey = "eb5b124d80c197ea4ca7358f030ee172";
+            let city = document.querySelector("#name").value;
+            let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+            axios.get(apiUrl).then(showTemperature)
+        }
+        let form = document.querySelector("#enter");
+        form.addEventListener("submit", tooth);
+
+        function farenhite(event) {
+            let to = document.querySelector(".change")
+            to.innerHTML = "67";
+        }
+        let toDo = document.querySelector("#celsiusLink")
+        toDo.addEventListener("click", farenhite)
+
+        function celsius(event) {
+            event.preventDefault();
+            let farenhiteChange = document.querySelector(".change")
+            farenhiteChange.innerHTML = "19"
+        }
+
+    </script>
 </body>
+
 </html>
